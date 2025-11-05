@@ -1,0 +1,6 @@
+@CRUD_ASPNET_HostAddress = http://localhost:5272
+
+GET {{CRUD_ASPNET_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
