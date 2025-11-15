@@ -9,6 +9,9 @@ var swaggerSettings = builder.Configuration.GetSection("Swagger");
 var routePrefix = swaggerSettings.GetValue<string>("RoutePrefix") ?? "api/docs";
 var jsonRouteTemplate = swaggerSettings.GetValue<string>("JsonRouteTemplate");
 
+
+builder.Services.AddAutoMapper(typeof(Program));
+
 if (app.Environment.IsDevelopment())
 {
 
