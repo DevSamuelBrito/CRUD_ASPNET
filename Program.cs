@@ -2,6 +2,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
@@ -10,7 +11,6 @@ var routePrefix = swaggerSettings.GetValue<string>("RoutePrefix") ?? "api/docs";
 var jsonRouteTemplate = swaggerSettings.GetValue<string>("JsonRouteTemplate");
 
 
-builder.Services.AddAutoMapper(typeof(Program));
 
 if (app.Environment.IsDevelopment())
 {
