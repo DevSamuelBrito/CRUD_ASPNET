@@ -8,6 +8,7 @@ namespace CRUD_ASPNET.Application.Mappings
     {
         public TaskProfile()
         {
+            CreateMap<CreateTaskDTO, Tasks>();
             CreateMap<UpdateTaskDto, Tasks>();
         }
     }
