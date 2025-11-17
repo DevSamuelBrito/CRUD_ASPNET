@@ -1,3 +1,4 @@
+using CRUD_ASPNET.Application.DTO;
 using CRUD_ASPNET.Configuration.Context;
 using CRUD_ASPNET.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,47 +11,50 @@ public class TaskRepository : ITaskRepository
 {
     private readonly AppDbContext _context;
 
-    public TaskRepository(AppDbContext context)
+    private readonly AutoMapper.IMapper _mapper;
+
+    public TaskRepository(AppDbContext context, AutoMapper.IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
 
-    public async Task<List<Tasks>> GetAllTasks()
+    public async Task<List<ReadTaskDto>> GetAllTasks()
     {
-        return await _context.Tasks.ToListAsync();
+        var tasks = await _context.Tasks.ToListAsync();
+        return _mapper.Map<List<ReadTaskDto>>(tasks);
     }
 
-    public async Task<Tasks> GetTaskById(int id)
+    public async Task<ReadTaskDto> GetTaskById(int id)
     {
 
         var task = await _context.Tasks.FindAsync(id);
 
         if (task is null)
             throw new InvalidOperationException($"Task with id {id} not found.");
-        return task;
+        return _mapper.Map<ReadTaskDto>(task);
     }
 
 
-    public async Task AddTask(Tasks task)
+    public async Task AddTask(Tasks dto)
     {
+        var task = _mapper.Map<Tasks>(dto);
+
         _context.Tasks.Add(task);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateTask(Tasks task)
+    public async Task UpdateTask(int id, Tasks dto)
     {
 
-        var existingTask = await _context.Tasks.FindAsync(task.Id);
+        var existingTask = await _context.Tasks.FindAsync(id);
 
         if (existingTask is null)
-            throw new InvalidOperationException($"Task with id {task.Id} not found.");
+            throw new InvalidOperationException($"Task with id {id} not found.");
 
-        existingTask.Title = task.Title;
-        existingTask.Description = task.Description;
-        existingTask.UpdatedAt = DateTime.UtcNow;
+        _mapper.Map(dto, existingTask);
 
-        _context.Tasks.Update(task);
         await _context.SaveChangesAsync();
     }
 
@@ -63,4 +67,4 @@ public class TaskRepository : ITaskRepository
 }
 
 
-//todo: entender o metodo update e se precisa instalar algum Mapper, abrir PR no github e criar camada de servico (service) entre controller e repository, criar camada de controller, 
+//todo, abrir PR no github e criar camada de servico (service) entre controller e repository, criar camada de controller, 
