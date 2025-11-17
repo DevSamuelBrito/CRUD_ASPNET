@@ -37,15 +37,19 @@ public class TaskRepository : ITaskRepository
     }
 
 
-    public async Task AddTask(Tasks dto)
+    public async Task<ReadTaskDto> AddTask(Tasks dto)
     {
         var task = _mapper.Map<Tasks>(dto);
+        //dar um console log aqui para ver o que ta chegando
 
         _context.Tasks.Add(task);
+
         await _context.SaveChangesAsync();
+
+        return _mapper.Map<ReadTaskDto>(task);
     }
 
-    public async Task UpdateTask(int id, Tasks dto)
+    public async Task<ReadTaskDto> UpdateTask(int id, Tasks dto)
     {
 
         var existingTask = await _context.Tasks.FindAsync(id);
@@ -56,11 +60,19 @@ public class TaskRepository : ITaskRepository
         _mapper.Map(dto, existingTask);
 
         await _context.SaveChangesAsync();
+
+        return _mapper.Map<ReadTaskDto>(existingTask);
     }
 
-    public Task DeleteTask(Tasks task)
+    public Task DeleteTask(Tasks id)
     {
-        _context.Tasks.Remove(task);
+        var taskToDelete = _context.Tasks.Find(id);
+
+        if (taskToDelete is null)
+            throw new InvalidOperationException($"Task with id {id} not found.");
+
+        _context.Tasks.Remove(taskToDelete);
+
         return _context.SaveChangesAsync();
     }
 
