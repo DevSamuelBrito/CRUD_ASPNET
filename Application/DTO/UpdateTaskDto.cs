@@ -1,6 +1,6 @@
 ﻿namespace CRUD_ASPNET.Application.DTO
 {
-    public class UpdateTaskDto
+    public class UpdateTaskDTO
     {
         public string? Title { get; set; }
         public string? Description { get; set; }

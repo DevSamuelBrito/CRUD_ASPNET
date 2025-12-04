@@ -10,7 +10,7 @@ namespace CRUD_ASPNET.Application.Mappings
         {
             CreateMap<Tasks, ReadTaskDto>();
             CreateMap<CreateTaskDTO, Tasks>();
-            CreateMap<UpdateTaskDto, Tasks>();
+            CreateMap<UpdateTaskDTO, Tasks>();
         }
     }
 }
