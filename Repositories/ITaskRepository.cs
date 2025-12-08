@@ -10,5 +10,5 @@ public interface ITaskRepository
     public Task<ReadTaskDto> GetTaskById(int id);
     public Task<ReadTaskDto> AddTask(Tasks task);
     public Task<ReadTaskDto> UpdateTask(int id, Tasks dto);
-    public Task DeleteTask(Tasks id);
+    public Task DeleteTask(int id);
 }

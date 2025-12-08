@@ -40,7 +40,6 @@ public class TaskRepository : ITaskRepository
     public async Task<ReadTaskDto> AddTask(Tasks dto)
     {
         var task = _mapper.Map<Tasks>(dto);
-        //dar um console log aqui para ver o que ta chegando
 
         _context.Tasks.Add(task);
 
@@ -59,24 +58,22 @@ public class TaskRepository : ITaskRepository
 
         _mapper.Map(dto, existingTask);
 
+        //await _context.Tasks.
+
         await _context.SaveChangesAsync();
 
         return _mapper.Map<ReadTaskDto>(existingTask);
     }
 
-    public Task DeleteTask(Tasks id)
+    public async Task DeleteTask(int id)
     {
-        var taskToDelete = _context.Tasks.Find(id);
+        var entity = await _context.Tasks.FindAsync(id);
 
-        if (taskToDelete is null)
-            throw new InvalidOperationException($"Task with id {id} not found.");
+        if (entity is null) throw new InvalidOperationException($"Task with id {id} not found.");
 
-        _context.Tasks.Remove(taskToDelete);
+        _context.Tasks.Remove(entity);
 
-        return _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
     }
 
 }
-
-
-//todo, abrir PR no github e criar camada de servico (service) entre controller e repository, criar camada de controller, 
