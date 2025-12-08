@@ -2,8 +2,6 @@ using CRUD_ASPNET.Application.DTO;
 using CRUD_ASPNET.Configuration.Context;
 using CRUD_ASPNET.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading.Tasks;
 
 namespace CRUD_ASPNET.Repositories;
 
@@ -48,17 +46,15 @@ public class TaskRepository : ITaskRepository
         return _mapper.Map<ReadTaskDto>(task);
     }
 
-    public async Task<ReadTaskDto> UpdateTask(int id, Tasks dto)
+    public async Task<ReadTaskDto> UpdateTask(int id, UpdateTaskDTO dto)
     {
-
         var existingTask = await _context.Tasks.FindAsync(id);
-
         if (existingTask is null)
             throw new InvalidOperationException($"Task with id {id} not found.");
 
         _mapper.Map(dto, existingTask);
 
-        //await _context.Tasks.
+        existingTask.UpdatedAt = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();
 
