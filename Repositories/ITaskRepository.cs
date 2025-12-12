@@ -9,6 +9,6 @@ public interface ITaskRepository
     public Task<List<ReadTaskDto>> GetAllTasks();
     public Task<ReadTaskDto> GetTaskById(int id);
     public Task<ReadTaskDto> AddTask(Tasks task);
-    public Task<ReadTaskDto> UpdateTask(int id, Tasks dto);
-    public Task DeleteTask(Tasks id);
+    public Task<ReadTaskDto> UpdateTask(int id, UpdateTaskDTO dto);
+    public Task DeleteTask(int id);
 }
