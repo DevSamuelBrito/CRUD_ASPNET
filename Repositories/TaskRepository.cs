@@ -1,6 +1,7 @@
 using CRUD_ASPNET.Application.DTO;
 using CRUD_ASPNET.Configuration.Context;
 using CRUD_ASPNET.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace CRUD_ASPNET.Repositories;
@@ -9,56 +10,33 @@ public class TaskRepository : ITaskRepository
 {
     private readonly AppDbContext _context;
 
-    private readonly AutoMapper.IMapper _mapper;
-
-    public TaskRepository(AppDbContext context, AutoMapper.IMapper mapper)
+    public TaskRepository(AppDbContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
 
-
-    public async Task<List<ReadTaskDto>> GetAllTasks()
+    public async Task<List<Tasks>> GetAllTasks()
     {
-        var tasks = await _context.Tasks.ToListAsync();
-        return _mapper.Map<List<ReadTaskDto>>(tasks);
+        return await _context.Tasks.ToListAsync();
     }
 
-    public async Task<ReadTaskDto> GetTaskById(int id)
+    public async Task<Tasks?> GetTaskById(int id)
     {
-
-        var task = await _context.Tasks.FindAsync(id);
-
-        if (task is null)
-            throw new InvalidOperationException($"Task with id {id} not found.");
-        return _mapper.Map<ReadTaskDto>(task);
+        return await _context.Tasks.FindAsync(id);
     }
 
-
-    public async Task<ReadTaskDto> AddTask(Tasks dto)
+    public async Task<Tasks> AddTask(Tasks task)
     {
-        var task = _mapper.Map<Tasks>(dto);
-
         _context.Tasks.Add(task);
-
         await _context.SaveChangesAsync();
-
-        return _mapper.Map<ReadTaskDto>(task);
+        return task;
     }
 
-    public async Task<ReadTaskDto> UpdateTask(int id, UpdateTaskDTO dto)
+    public async Task<Tasks> UpdateTask(Tasks task)
     {
-        var existingTask = await _context.Tasks.FindAsync(id);
-        if (existingTask is null)
-            throw new InvalidOperationException($"Task with id {id} not found.");
-
-        _mapper.Map(dto, existingTask);
-
-        existingTask.UpdatedAt = DateTime.UtcNow;
-
+        _context.Update(task);
         await _context.SaveChangesAsync();
-
-        return _mapper.Map<ReadTaskDto>(existingTask);
+        return task;
     }
 
     public async Task DeleteTask(int id)
