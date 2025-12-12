@@ -9,3 +9,16 @@ TodoApi/
 │   └── Tarefa.cs                    👈 Entidades e DTOs
 └── Data/
     └── AppDbContext.cs
+
+
+Controller (HTTP)
+    ↓ chama
+Service (Lógica + DTO)
+    ↓ chama
+Repository (Banco)
+    ↓ retorna
+Entidade (Models.Tasks)
+    ↓ AutoMapper converte
+DTO (ReadTaskDto)
+    ↓ retorna para
+Controller → Cliente
