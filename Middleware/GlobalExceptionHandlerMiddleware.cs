@@ -22,22 +22,18 @@ namespace CRUD_ASPNET.Middleware
         {
             try
             {
-                // Tenta executar o próximo middleware na pipeline
                 await _next(context);
             }
             catch (Exception ex)
             {
-                // Se algo der errado, captura aqui e trata
                 await HandleExceptionAsync(context, ex);
             }
         }
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            // Loga o erro completo com stack trace
             _logger.LogError(exception, "Erro não tratado: {Message}", exception.Message);
 
-            // Define o status code baseado no tipo de exceção
             var statusCode = exception switch
             {
                 InvalidOperationException => HttpStatusCode.NotFound,     // 404
@@ -46,22 +42,15 @@ namespace CRUD_ASPNET.Middleware
                 _ => HttpStatusCode.InternalServerError                    // 500
             };
 
-            // Cria a resposta padronizada
             var response = new
             {
                 StatusCode = (int)statusCode,
                 Message = exception.Message,
-                // Em produção, não expõe detalhes internos
-                Detail = context.RequestServices.GetRequiredService<IWebHostEnvironment>().IsDevelopment()
-                    ? exception.StackTrace
-                    : "Ocorreu um erro interno. Entre em contato com o suporte."
             };
 
-            // Configura a resposta HTTP
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)statusCode;
 
-            // Serializa e retorna o JSON
             var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
