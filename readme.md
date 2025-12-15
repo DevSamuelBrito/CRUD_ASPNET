@@ -2,6 +2,7 @@
 
 ![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=flat&logo=dotnet)
 ![C#](https://img.shields.io/badge/C%23-12.0-239120?style=flat&logo=csharp)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
 
 RESTful API for task management built with ASP.NET Core, following Clean Architecture principles and development best practices.
 
@@ -275,7 +276,7 @@ The API returns standardized error responses:
 - [ ] Docker and Docker Compose
 - [ ] CI/CD with GitHub Actions
 - [ ] Rate limiting
-- [ ] API versioning
+- [X] API versioning
 
 ## 🤝 Contributing
 
