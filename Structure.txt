@@ -1,0 +1,24 @@
+TodoApi/
+├── Controllers/
+│   └── TarefasController.cs         👈 Lida só com requisições HTTP
+├── Services/
+│   └── TarefaService.cs             👈 Lógica de negócio
+├── Repositories/
+│   └── TarefaRepository.cs          👈 Acesso ao banco (DbContext)
+├── Models/
+│   └── Tarefa.cs                    👈 Entidades e DTOs
+└── Data/
+    └── AppDbContext.cs
+
+
+Controller (HTTP)
+    ↓ chama
+Service (Lógica + DTO)
+    ↓ chama
+Repository (Banco)
+    ↓ retorna
+Entidade (Models.Tasks)
+    ↓ AutoMapper converte
+DTO (ReadTaskDto)
+    ↓ retorna para
+Controller → Cliente
