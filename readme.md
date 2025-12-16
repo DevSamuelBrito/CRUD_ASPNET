@@ -2,7 +2,7 @@
 
 ![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=flat&logo=dotnet)
 ![C#](https://img.shields.io/badge/C%23-12.0-239120?style=flat&logo=csharp)
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
 
 RESTful API for task management built with ASP.NET Core, following Clean Architecture principles and development best practices.
 
@@ -23,7 +23,7 @@ RESTful API for task management built with ASP.NET Core, following Clean Archite
 - **Framework:** ASP.NET Core 9.0
 - **Language:** C# 12.0
 - **ORM:** Entity Framework Core 9.0
-- **Database:** SQLite (development) / PostgreSQL (production - planned)
+- **Database:** PostgreSQL
 - **Mapping:** AutoMapper
 - **Documentation:** Swagger/OpenAPI
 - **Validation:** Data Annotations
@@ -59,7 +59,8 @@ CRUD_ASPNET/
 
 ## 📋 Prerequisites
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
+- [PostgreSQL](https://www.postgresql.org/download/) (version 12 or higher)
 - Git
 - Recommended IDE: Visual Studio Code or Visual Studio 2022
 
@@ -79,17 +80,64 @@ cd CRUD_ASPNET
 dotnet restore
 ```
 
-### 3. Configure connection string (optional)
+### 3. Configure PostgreSQL database
 
-Edit `appsettings.json` if needed:
+#### 3.1. Create PostgreSQL database
+
+First, create a database in PostgreSQL:
+
+```sql
+CREATE DATABASE crud_aspnet;
+```
+
+#### 3.2. Configure connection string
+
+You have two options for configuring the PostgreSQL connection string:
+
+**Option A: Using User Secrets (Recommended for development)**
+
+Initialize and configure user secrets:
+
+```bash
+# Initialize user secrets
+dotnet user-secrets init
+
+# Set connection string
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Database=crud_aspnet;Username=your_user;Password=your_password"
+```
+
+**Option B: Environment Variable**
+
+Set the connection string as an environment variable:
+
+```bash
+# macOS/Linux
+export ConnectionStrings__DefaultConnection="Host=localhost;Database=crud_aspnet;Username=your_user;Password=your_password"
+
+# Windows (PowerShell)
+$env:ConnectionStrings__DefaultConnection="Host=localhost;Database=crud_aspnet;Username=your_user;Password=your_password"
+```
+
+**Option C: appsettings.Development.json (Not recommended - for testing only)**
+
+⚠️ **Warning:** Never commit database credentials to version control!
+
+Edit `appsettings.Development.json`:
 
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Data Source=app.db"
+    "DefaultConnection": "Host=localhost;Database=crud_aspnet;Username=your_user;Password=your_password"
   }
 }
 ```
+
+**Connection String Parameters:**
+- `Host`: PostgreSQL server address (usually `localhost` for local development)
+- `Database`: Database name (e.g., `crud_aspnet`)
+- `Username`: Your PostgreSQL username
+- `Password`: Your PostgreSQL password
+- `Port`: PostgreSQL port (default: 5432, optional if using default)
 
 ### 4. Run migrations
 
@@ -269,7 +317,7 @@ The API returns standardized error responses:
 
 ## 📝 Roadmap / Future Improvements
 
-- [ ] Migration to PostgreSQL
+- [X] Migration to PostgreSQL
 - [ ] Pagination in listings
 - [ ] Filtering and sorting
 - [ ] Unit tests (xUnit)
