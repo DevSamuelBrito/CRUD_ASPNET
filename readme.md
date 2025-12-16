@@ -274,7 +274,7 @@ The API returns standardized error responses:
 - [ ] Filtering and sorting
 - [ ] Unit tests (xUnit)
 - [ ] Docker and Docker Compose
-- [ ] CI/CD with GitHub Actions
+- [X] CI/CD with GitHub Actions
 - [ ] Rate limiting
 - [X] API versioning
 
