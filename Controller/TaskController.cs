@@ -16,9 +16,13 @@ namespace CRUD_ASPNET.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllTasks()
+        public async Task<IActionResult> GetAllTasks([FromBody] int pageNumber, int pageSize)
         {
-            var tasks = await _service.GetAllTasks();
+
+            if (pageNumber < 1) pageNumber = 1;
+            if (pageSize < 1 || pageSize > 100) pageSize = 10; 
+
+            var tasks = await _service.GetAllTasksPaginated(pageNumber, pageSize);
             return Ok(tasks);
         }
 
