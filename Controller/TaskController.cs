@@ -14,8 +14,14 @@ namespace CRUD_ASPNET.Controller
         {
             _service = service;
         }
-
         [HttpGet]
+        public async Task<IActionResult> GetAllTasks()
+        {
+            var tasks =  await _service.GetAllTasks();
+            return Ok(tasks);
+        }
+
+        [HttpGet("paginated")]
         public async Task<IActionResult> GetAllTasks([FromQuery] GetParametersDTO parameters)
         { 
             var tasks = await _service.GetAllTasksPaginated(parameters.PageNumber, parameters.PageSize);
