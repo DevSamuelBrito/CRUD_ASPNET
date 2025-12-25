@@ -1,7 +1,5 @@
-using CRUD_ASPNET.Application.DTO;
 using CRUD_ASPNET.Configuration.Context;
 using CRUD_ASPNET.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace CRUD_ASPNET.Repositories;
@@ -15,9 +13,18 @@ public class TaskRepository : ITaskRepository
         _context = context;
     }
 
-    public async Task<List<Tasks>> GetAllTasks()
+    public async Task<(List<Tasks>, int totalCount)> GetAllTasksPaginated(int pageNumber, int pageSize)
     {
-        return await _context.Tasks.ToListAsync();
+        var query = _context.Tasks.AsQueryable();
+
+        var count = await query.CountAsync();  
+
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, count);
     }
 
     public async Task<Tasks?> GetTaskById(int id)

@@ -2,7 +2,7 @@
 
 ![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=flat&logo=dotnet)
 ![C#](https://img.shields.io/badge/C%23-12.0-239120?style=flat&logo=csharp)
-![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Version](https://img.shields.io/badge/version-2.1.0-blue)
 
 RESTful API for task management built with ASP.NET Core, following Clean Architecture principles and development best practices.
 
@@ -14,6 +14,7 @@ RESTful API for task management built with ASP.NET Core, following Clean Archite
 - ✅ Structured logging with ILogger
 - ✅ Layered architecture (Controller → Service → Repository)
 - ✅ DTOs for separation of concerns
+- ✅ Pagination support for large datasets
 - ✅ AutoMapper for object mapping
 - ✅ Automatic documentation with Swagger/OpenAPI
 - ✅ CORS configured for frontend integration
@@ -318,7 +319,7 @@ The API returns standardized error responses:
 ## 📝 Roadmap / Future Improvements
 
 - [X] Migration to PostgreSQL
-- [ ] Pagination in listings
+- [X] Pagination in listings
 - [ ] Filtering and sorting
 - [ ] Unit tests (xUnit)
 - [ ] Docker and Docker Compose
