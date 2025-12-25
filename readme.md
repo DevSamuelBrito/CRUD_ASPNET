@@ -14,6 +14,7 @@ RESTful API for task management built with ASP.NET Core, following Clean Archite
 - ✅ Structured logging with ILogger
 - ✅ Layered architecture (Controller → Service → Repository)
 - ✅ DTOs for separation of concerns
+- ✅ Pagination support for large datasets
 - ✅ AutoMapper for object mapping
 - ✅ Automatic documentation with Swagger/OpenAPI
 - ✅ CORS configured for frontend integration
@@ -318,7 +319,7 @@ The API returns standardized error responses:
 ## 📝 Roadmap / Future Improvements
 
 - [X] Migration to PostgreSQL
-- [ ] Pagination in listings
+- [X] Pagination in listings
 - [ ] Filtering and sorting
 - [ ] Unit tests (xUnit)
 - [ ] Docker and Docker Compose

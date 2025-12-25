@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CRUD_ASPNET.Application.DTO;
 using CRUD_ASPNET.Models;
+using CRUD_ASPNET.Pagination;
 using CRUD_ASPNET.Repositories;
 
 namespace CRUD_ASPNET.Services
@@ -19,10 +20,13 @@ namespace CRUD_ASPNET.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<ReadTaskDto>> GetAllTasks()
+        public async Task<PagedList<ReadTaskDto>> GetAllTasksPaginated(int pageNumber, int pageSize)
         {
-            var tasks = await _repository.GetAllTasks();
-            return _mapper.Map<IEnumerable<ReadTaskDto>>(tasks);
+            var (tasks, totalCount) = await _repository.GetAllTasksPaginated(pageNumber, pageSize);
+
+            var dtos = _mapper.Map<List<ReadTaskDto>>(tasks);
+
+            return new PagedList<ReadTaskDto>(dtos, totalCount, pageNumber, pageSize);
         }
 
         public async Task<ReadTaskDto?> GetTaskById(int id)
