@@ -20,6 +20,13 @@ namespace CRUD_ASPNET.Services
             _logger = logger;
         }
 
+        public async Task<List<ReadTaskDto>> GetAllTasks()
+        {
+            var (tasks, _) = await _repository.GetAllTasksPaginated(1, int.MaxValue);
+
+            return _mapper.Map<List<ReadTaskDto>>(tasks);
+        }
+
         public async Task<PagedList<ReadTaskDto>> GetAllTasksPaginated(int pageNumber, int pageSize)
         {
             var (tasks, totalCount) = await _repository.GetAllTasksPaginated(pageNumber, pageSize);

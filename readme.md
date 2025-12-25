@@ -2,7 +2,7 @@
 
 ![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=flat&logo=dotnet)
 ![C#](https://img.shields.io/badge/C%23-12.0-239120?style=flat&logo=csharp)
-![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Version](https://img.shields.io/badge/version-2.1.0-blue)
 
 RESTful API for task management built with ASP.NET Core, following Clean Architecture principles and development best practices.
 
