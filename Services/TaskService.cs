@@ -22,16 +22,11 @@ namespace CRUD_ASPNET.Services
 
         public async Task<PagedList<ReadTaskDto>> GetAllTasksPaginated(int pageNumber, int pageSize)
         {
-            var pagedTasks = await _repository.GetAllTasksPaginated(pageNumber, pageSize);
+            var (tasks, totalCount) = await _repository.GetAllTasksPaginated(pageNumber, pageSize);
 
-            var dtos = _mapper.Map<List<ReadTaskDto>>(pagedTasks.Data);
+            var dtos = _mapper.Map<List<ReadTaskDto>>(tasks);
 
-            return new PagedList<ReadTaskDto>(
-                dtos,
-                pagedTasks.TotalCount,
-                pagedTasks.CurrentPage,
-                pagedTasks.PageSize
-            );
+            return new PagedList<ReadTaskDto>(dtos, totalCount, pageNumber, pageSize);
         }
 
         public async Task<ReadTaskDto?> GetTaskById(int id)
