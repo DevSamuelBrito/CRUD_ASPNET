@@ -19,8 +19,14 @@ public class TaskRepository : ITaskRepository
     public async Task<PagedList<Tasks>> GetAllTasksPaginated(int pageNumber, int pageSize)
     {
         var query = _context.Tasks.AsQueryable();
-        
-        return PagedList<Tasks>.ToPagedList(query, pageNumber, pageSize);
+
+        var count = await query.CountAsync();  
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return new PagedList<Tasks>(items, count, pageNumber, pageSize);
     }
 
     public async Task<Tasks?> GetTaskById(int id)

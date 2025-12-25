@@ -24,7 +24,7 @@ namespace CRUD_ASPNET.Services
         {
             var pagedTasks = await _repository.GetAllTasksPaginated(pageNumber, pageSize);
 
-            var dtos = _mapper.Map<List<ReadTaskDto>>(pagedTasks);
+            var dtos = _mapper.Map<List<ReadTaskDto>>(pagedTasks.Data);
 
             return new PagedList<ReadTaskDto>(
                 dtos,

@@ -2,12 +2,13 @@ using System;
 
 namespace CRUD_ASPNET.Pagination;
 
-public class PagedList<T> : List<T> where T : class
+public class PagedList<T> where T : class
 {
-    public int CurrentPage { get; private set; } = 1; 
-    public int TotalPages { get; private set; }
-    public int PageSize { get; private set; } = 20;
-    public int TotalCount { get; private set; } 
+    public List<T> Data { get; set; } = new();
+    public int CurrentPage { get; set; } = 1;
+    public int TotalPages { get; set; }
+    public int PageSize { get; set; } = 20;
+    public int TotalCount { get; set; }
     public bool HasPrevious => CurrentPage > 1;
     public bool HasNext => CurrentPage < TotalPages;
 
@@ -18,7 +19,7 @@ public class PagedList<T> : List<T> where T : class
         PageSize = pageSize;
         CurrentPage = pageNumber;
         TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-        AddRange(items);
+        Data = items;
     }
 
     //metodo static
