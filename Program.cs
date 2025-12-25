@@ -19,10 +19,10 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     options.InvalidModelStateResponseFactory = context =>
     {
         var errors = context.ModelState
-            .Where(e => e.Value.Errors.Count > 0)
+            .Where(e => e.Value?.Errors.Count > 0)
             .ToDictionary(
                 e => e.Key,
-                e => e.Value.Errors.Select(x => x.ErrorMessage).ToArray()
+                e => e.Value?.Errors.Select(x => x.ErrorMessage ?? string.Empty).ToArray() ?? Array.Empty<string>()
             );
 
         var result = new

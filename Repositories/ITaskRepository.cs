@@ -1,5 +1,4 @@
 using CRUD_ASPNET.Models;
-using CRUD_ASPNET.Pagination;
 
 namespace CRUD_ASPNET.Repositories;
 
