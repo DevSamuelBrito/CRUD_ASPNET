@@ -24,7 +24,7 @@ namespace CRUD_ASPNET.Controller
         [HttpGet("paginated")]
         public async Task<IActionResult> GetAllTasks([FromQuery] GetParametersDTO parameters)
         { 
-            var tasks = await _service.GetAllTasksPaginated(parameters.PageNumber, parameters.PageSize);
+            var tasks = await _service.GetAllTasksPaginated(parameters.PageNumber, parameters.PageSize, parameters.title, parameters.status);
             return Ok(tasks);
         }
 
