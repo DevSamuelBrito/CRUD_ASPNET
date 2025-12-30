@@ -13,13 +13,18 @@ public class TaskRepository : ITaskRepository
         _context = context;
     }
 
-    public async Task<(List<Tasks>, int totalCount)> GetAllTasksPaginated(int pageNumber, int pageSize)
+    public async Task<(List<Tasks>, int totalCount)> GetAllTasksPaginated(int pageNumber, int pageSize, string? title = null, Models.TaskStatus? status = null)
     {
-        var query = _context.Tasks.AsQueryable();
+
+
+        var query = _context.Tasks
+        .Where(t => (title == null || t.Title.Contains(title, StringComparison.CurrentCultureIgnoreCase)) &&
+                (status == null || t.Status == status));
 
         var count = await query.CountAsync();  
-
+        
         var items = await query
+            .OrderByDescending(t => t.CreatedAt)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();

@@ -17,14 +17,20 @@ namespace CRUD_ASPNET.Controller
         [HttpGet]
         public async Task<IActionResult> GetAllTasks()
         {
-            var tasks =  await _service.GetAllTasks();
+            var tasks = await _service.GetAllTasks();
             return Ok(tasks);
         }
 
         [HttpGet("paginated")]
         public async Task<IActionResult> GetAllTasks([FromQuery] GetParametersDTO parameters)
-        { 
-            var tasks = await _service.GetAllTasksPaginated(parameters.PageNumber, parameters.PageSize);
+        {
+
+            if (parameters.PageSize > 100)
+            {
+                return BadRequest(new { error = "PageSize cannot be greater than 100." });
+            }
+
+            var tasks = await _service.GetAllTasksPaginated(parameters.PageNumber, parameters.PageSize, parameters.title, parameters.status);
             return Ok(tasks);
         }
 
