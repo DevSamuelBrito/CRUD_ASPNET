@@ -4,7 +4,7 @@ namespace CRUD_ASPNET.Repositories;
 
 public interface ITaskRepository
 {
-    public Task<(List<Tasks>, int totalCount)> GetAllTasksPaginated(int pageNumber, int pageSize);
+    public Task<(List<Tasks>, int totalCount)> GetAllTasksPaginated(int pageNumber, int pageSize, string? title = null, Models.TaskStatus? status = null);
     public Task<Tasks?> GetTaskById(int id);
     public Task<Tasks> AddTask(Tasks task);
     public Task<Tasks> UpdateTask(Tasks task);
