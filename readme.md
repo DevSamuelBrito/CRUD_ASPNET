@@ -2,7 +2,7 @@
 
 ![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=flat&logo=dotnet)
 ![C#](https://img.shields.io/badge/C%23-12.0-239120?style=flat&logo=csharp)
-![Version](https://img.shields.io/badge/version-2.1.0-blue)
+![Version](https://img.shields.io/badge/version-2.2.0-blue)
 
 RESTful API for task management built with ASP.NET Core, following Clean Architecture principles and development best practices.
 
@@ -134,6 +134,7 @@ Edit `appsettings.Development.json`:
 ```
 
 **Connection String Parameters:**
+
 - `Host`: PostgreSQL server address (usually `localhost` for local development)
 - `Database`: Database name (e.g., `crud_aspnet`)
 - `Username`: Your PostgreSQL username
@@ -318,14 +319,14 @@ The API returns standardized error responses:
 
 ## 📝 Roadmap / Future Improvements
 
-- [X] Migration to PostgreSQL
-- [X] Pagination in listings
-- [ ] Filtering and sorting
+- [x] Migration to PostgreSQL
+- [x] Pagination in listings
+- [x] Filtering and sorting
 - [ ] Unit tests (xUnit)
 - [ ] Docker and Docker Compose
-- [X] CI/CD with GitHub Actions
+- [x] CI/CD with GitHub Actions
 - [ ] Rate limiting
-- [X] API versioning
+- [x] API versioning
 
 ## 🤝 Contributing
 
