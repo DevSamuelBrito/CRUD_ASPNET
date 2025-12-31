@@ -9,7 +9,7 @@ namespace CRUD_ASPNET.Application.Services.Interfaces
         public Task<PagedList<ReadTaskDto>> GetAllTasksPaginated(int pageNumber, int pageSize, string? title, Domain.Entities.TaskStatus? status);
         public Task<ReadTaskDto?> GetTaskById(int id);
         public Task<ReadTaskDto> CreateTask(CreateTaskDTO createTaskDto);
-        public Task<ReadTaskDto> UpdateTask(int id, UpdateTaskDTO updateTaskDTO);
+        public Task<ReadTaskDto?> UpdateTask(int id, UpdateTaskDTO updateTaskDTO);
         public Task DeleteTask(int id);
     }
 }
