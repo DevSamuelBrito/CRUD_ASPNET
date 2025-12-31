@@ -1,6 +1,6 @@
 using System;
 
-namespace CRUD_ASPNET.Models;
+namespace CRUD_ASPNET.Domain.Entities;
 
 public class Tasks
 {

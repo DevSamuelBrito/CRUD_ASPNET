@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using CRUD_ASPNET.Application.DTO;
-using CRUD_ASPNET.Models;
-using CRUD_ASPNET.Pagination;
-using CRUD_ASPNET.Repositories;
+using CRUD_ASPNET.Application.Services.Interfaces;
+using CRUD_ASPNET.Domain.Entities;
+using CRUD_ASPNET.Infra.Pagination;
+using CRUD_ASPNET.Infra.Repositories.Interfaces;
 
 namespace CRUD_ASPNET.Services
 {
@@ -27,7 +28,7 @@ namespace CRUD_ASPNET.Services
             return _mapper.Map<List<ReadTaskDto>>(tasks);
         }
 
-        public async Task<PagedList<ReadTaskDto>> GetAllTasksPaginated(int pageNumber, int pageSize, string? title, Models.TaskStatus? status)
+        public async Task<PagedList<ReadTaskDto>> GetAllTasksPaginated(int pageNumber, int pageSize, string? title, Domain.Entities.TaskStatus? status)
         {
             var (tasks, totalCount) = await _repository.GetAllTasksPaginated(pageNumber, pageSize, title, status);
 

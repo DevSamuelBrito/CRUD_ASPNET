@@ -1,5 +1,5 @@
 using CRUD_ASPNET.Application.DTO;
-using CRUD_ASPNET.Services;
+using CRUD_ASPNET.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRUD_ASPNET.Controller
