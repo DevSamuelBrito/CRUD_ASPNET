@@ -1,4 +1,3 @@
-using System;
 using CRUD_ASPNET.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 

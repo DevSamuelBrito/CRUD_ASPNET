@@ -1,5 +1,3 @@
-using System;
-
 namespace CRUD_ASPNET.Application.DTO;
 
 public class ReadTaskDto

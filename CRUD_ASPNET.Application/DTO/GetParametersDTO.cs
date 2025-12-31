@@ -1,4 +1,6 @@
-﻿namespace CRUD_ASPNET.Application.DTO
+﻿using CRUD_ASPNET.Domain;
+
+namespace CRUD_ASPNET.Application.DTO
 {
     public class GetParametersDTO
     {

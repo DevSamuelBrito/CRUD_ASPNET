@@ -1,5 +1,3 @@
-using System;
-
 namespace CRUD_ASPNET.Domain.Entities;
 
 public enum TaskStatus

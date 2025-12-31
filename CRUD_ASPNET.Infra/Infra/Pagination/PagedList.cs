@@ -1,5 +1,3 @@
-using System;
-
 namespace CRUD_ASPNET.Infra.Pagination;
 
 public class PagedList<T> where T : class

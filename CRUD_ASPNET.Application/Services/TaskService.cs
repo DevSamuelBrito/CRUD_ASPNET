@@ -4,6 +4,7 @@ using CRUD_ASPNET.Application.Services.Interfaces;
 using CRUD_ASPNET.Domain.Entities;
 using CRUD_ASPNET.Infra.Pagination;
 using CRUD_ASPNET.Infra.Repositories.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace CRUD_ASPNET.Services
 {
