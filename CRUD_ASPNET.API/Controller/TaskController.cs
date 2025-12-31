@@ -2,7 +2,7 @@ using CRUD_ASPNET.Application.DTO;
 using CRUD_ASPNET.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CRUD_ASPNET.Controller
+namespace CRUD_ASPNET.API.Controller
 {
     [Route("api/[controller]")]
     [ApiController]

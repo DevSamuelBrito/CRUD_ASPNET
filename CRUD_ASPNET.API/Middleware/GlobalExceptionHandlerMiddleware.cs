@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text.Json;
 
-namespace CRUD_ASPNET.Middleware
+namespace CRUD_ASPNET.API.Middleware
 {
     /// <summary>
     /// Middleware global que captura TODAS as exceções da aplicação

@@ -1,7 +1,7 @@
+using CRUD_ASPNET.API.Middleware;
 using CRUD_ASPNET.Application.Services.Interfaces;
 using CRUD_ASPNET.Configuration.Context;
 using CRUD_ASPNET.Infra.Repositories.Interfaces;
-using CRUD_ASPNET.Middleware;
 using CRUD_ASPNET.Repositories;
 using CRUD_ASPNET.Services;
 using Microsoft.AspNetCore.Mvc;
