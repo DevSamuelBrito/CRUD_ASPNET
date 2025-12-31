@@ -40,7 +40,7 @@ namespace CRUD_ASPNET.Controller
             var task = await _service.GetTaskById(id);
 
             if (task is null)
-                return NotFound("$Task with id {id} not found.");
+                return NotFound($"Task with id {id} not found.");
 
             return Ok(task);
         }
