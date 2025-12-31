@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using CRUD_ASPNET.Models;
 using CRUD_ASPNET.Application.DTO;
+using CRUD_ASPNET.Domain.Entities;
 
 namespace CRUD_ASPNET.Application.Mappings
 {

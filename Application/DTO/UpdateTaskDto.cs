@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using CRUD_ASPNET.Models;
 
 namespace CRUD_ASPNET.Application.DTO
 {
@@ -13,7 +12,7 @@ namespace CRUD_ASPNET.Application.DTO
         public string? Description { get; set; }
 
         [Required(ErrorMessage = "Status is required")]
-        [EnumDataType(typeof(Models.TaskStatus), ErrorMessage = "Status must be ToDo (1), Doing (2), or Done (3)")]
-        public Models.TaskStatus? Status { get; set; }
+        [EnumDataType(typeof(Domain.Entities.TaskStatus), ErrorMessage = "Status must be ToDo (1), Doing (2), or Done (3)")]
+        public Domain.Entities.TaskStatus? Status { get; set; }
     }
 }

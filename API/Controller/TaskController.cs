@@ -1,5 +1,5 @@
 using CRUD_ASPNET.Application.DTO;
-using CRUD_ASPNET.Services;
+using CRUD_ASPNET.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRUD_ASPNET.Controller
@@ -38,6 +38,10 @@ namespace CRUD_ASPNET.Controller
         public async Task<IActionResult> GetTaskById(int id)
         {
             var task = await _service.GetTaskById(id);
+
+            if (task is null)
+                return NotFound($"Task with id {id} not found.");
+
             return Ok(task);
         }
 
@@ -53,6 +57,10 @@ namespace CRUD_ASPNET.Controller
         public async Task<IActionResult> UpdateTask(int id, [FromBody] UpdateTaskDTO updateTaskDTO)
         {
             var updatedTask = await _service.UpdateTask(id, updateTaskDTO);
+
+            if(updatedTask is null)
+                return NotFound($"Task with id {id} not found.");
+
             return Ok(updatedTask);
         }
 
