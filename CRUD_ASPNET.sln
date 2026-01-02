@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		readme.md = readme.md
 		Structure.txt = Structure.txt
+		.dockerignore = .dockerignore
+		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
 Global
