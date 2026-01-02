@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRUD_ASPNET.Infra", "CRUD_A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRUD_ASPNET.API", "CRUD_ASPNET.API\CRUD_ASPNET.API.csproj", "{36F97F92-A220-4B17-ADFB-10FF6D51447B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRUD_ASPNET.Tests", "CRUD_ASPNET.Tests\CRUD_ASPNET.Tests.csproj", "{2010E021-070F-4137-AC95-97DA80EEB62C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{36F97F92-A220-4B17-ADFB-10FF6D51447B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36F97F92-A220-4B17-ADFB-10FF6D51447B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36F97F92-A220-4B17-ADFB-10FF6D51447B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2010E021-070F-4137-AC95-97DA80EEB62C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2010E021-070F-4137-AC95-97DA80EEB62C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2010E021-070F-4137-AC95-97DA80EEB62C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2010E021-070F-4137-AC95-97DA80EEB62C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
