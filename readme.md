@@ -2,7 +2,7 @@
 
 ![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=flat&logo=dotnet)
 ![C#](https://img.shields.io/badge/C%23-12.0-239120?style=flat&logo=csharp)
-![Version](https://img.shields.io/badge/version-2.2.0-blue)
+![Version](https://img.shields.io/badge/version-2.3.0-blue)
 
 RESTful API for task management built with ASP.NET Core, following Clean Architecture principles and development best practices.
 
@@ -12,12 +12,13 @@ RESTful API for task management built with ASP.NET Core, following Clean Archite
 - ✅ Automatic validation with Data Annotations
 - ✅ Global exception handling with standardized responses
 - ✅ Structured logging with ILogger
-- ✅ Layered architecture (Controller → Service → Repository)
+- ✅ Clean Architecture with separated layers (API, Application, Domain, Infrastructure)
 - ✅ DTOs for separation of concerns
-- ✅ Pagination support for large datasets
+- ✅ Pagination support with filtering (by title and status)
 - ✅ AutoMapper for object mapping
 - ✅ Automatic documentation with Swagger/OpenAPI
 - ✅ CORS configured for frontend integration
+- ✅ Unit tests with xUnit
 
 ## 🚀 Technologies
 
@@ -31,32 +32,62 @@ RESTful API for task management built with ASP.NET Core, following Clean Archite
 
 ## 🏗️ Architecture
 
+The project follows **Clean Architecture** principles and is organized into separate layers using **Class Libraries**:
+
 ```
 CRUD_ASPNET/
-├── Controller/              # HTTP Endpoints (API)
-├── Services/                # Business logic
-│   ├── ITaskService.cs
-│   └── TaskService.cs
-├── Repositories/            # Data access
-│   ├── ITaskRepository.cs
-│   └── TaskRepository.cs
-├── Models/                  # Database entities
-│   ├── Tasks.cs
-│   └── TaskStatus.cs
-├── Application/
-│   ├── DTO/                # Data Transfer Objects
-│   │   ├── CreateTaskDTO.cs
+├── CRUD_ASPNET.API/                    # 🌐 Presentation Layer
+│   ├── Controller/                      # HTTP Endpoints (API Controllers)
+│   │   └── TaskController.cs
+│   ├── Middleware/                      # Exception handlers & middlewares
+│   │   └── GlobalExceptionHandlerMiddleware.cs
+│   ├── Program.cs                       # Application configuration
+│   └── Properties/
+│       └── launchSettings.json
+│
+├── CRUD_ASPNET.Application/            # 📋 Application Layer
+│   ├── Services/                        # Business logic
+│   │   ├── Interfaces/
+│   │   │   └── ITaskService.cs
+│   │   └── TaskService.cs
+│   ├── DTO/                            # Data Transfer Objects
+│   │   ├── CreateTaskDto.cs
 │   │   ├── ReadTaskDto.cs
-│   │   └── UpdateTaskDTO.cs
-│   └── Mappings/           # AutoMapper profiles
+│   │   ├── UpdateTaskDto.cs
+│   │   └── GetParametersDTO.cs         # DTO for pagination
+│   └── Mappings/                       # AutoMapper profiles
 │       └── TaskProfile.cs
-├── Configuration/
-│   └── Context/            # DbContext
-│       └── AppDbContext.cs
-├── Middleware/             # Exception handlers
-│   └── GlobalExceptionHandlerMiddleware.cs
-└── Migrations/             # EF Core Migrations
+│
+├── CRUD_ASPNET.Domain/                 # 🎯 Domain Layer
+│   └── Entities/                        # Domain entities
+│       ├── Tasks.cs
+│       └── TaskStatus.cs
+│
+├── CRUD_ASPNET.Infra/                  # 🗄️ Infrastructure Layer
+│   └── Infra/
+│       ├── Configuration/
+│       │   └── Context/
+│       │       └── AppDbContext.cs     # EF Core DbContext
+│       ├── Repositories/               # Data access
+│       │   ├── Interfaces/
+│       │   │   └── ITaskRepository.cs
+│       │   └── TaskRepository.cs
+│       └── Pagination/                 # Pagination utilities
+│           └── PagedList.cs
+│
+└── CRUD_ASPNET.Tests/                  # 🧪 Test Layer
+    ├── Services/
+    │   └── TaskServiceTests.cs
+    └── CRUD_ASPNET.Tests.csproj
 ```
+
+### Separation of Concerns
+
+- **API Layer:** Handles HTTP requests and returns responses
+- **Application Layer:** Contains business logic and orchestration
+- **Domain Layer:** Defines entities and domain business rules
+- **Infrastructure Layer:** Implements persistence, data access, and external features
+- **Test Layer:** Unit and integration tests
 
 ## 📋 Prerequisites
 
@@ -159,19 +190,35 @@ The API will be available at:
 - **HTTPS:** https://localhost:7217
 - **Swagger:** http://localhost:5272/api/docs
 
+### 6. Run the Tests
+
+```bash
+dotnet test
+```
+
 ## 📖 API Documentation
 
 Access the interactive Swagger documentation at `/api/docs` after starting the application.
 
 ### Available Endpoints
 
-| Method | Endpoint         | Description          | Request Body  | Status Code   |
-| ------ | ---------------- | -------------------- | ------------- | ------------- |
-| GET    | `/api/task`      | List all tasks       | -             | 200           |
-| GET    | `/api/task/{id}` | Get task by ID       | -             | 200, 404      |
-| POST   | `/api/task`      | Create new task      | CreateTaskDTO | 201, 400      |
-| PUT    | `/api/task/{id}` | Update existing task | UpdateTaskDTO | 200, 400, 404 |
-| DELETE | `/api/task/{id}` | Delete task          | -             | 204, 404      |
+| Method | Endpoint              | Description                | Request Body  | Query Params                        | Status Code   |
+| ------ | --------------------- | -------------------------- | ------------- | ----------------------------------- | ------------- |
+| GET    | `/api/task`           | List all tasks             | -             | -                                   | 200           |
+| GET    | `/api/task/paginated` | List tasks with pagination | -             | PageNumber, PageSize, title, status | 200, 400      |
+| GET    | `/api/task/{id}`      | Get task by ID             | -             | -                                   | 200, 404      |
+| POST   | `/api/task`           | Create new task            | CreateTaskDTO | -                                   | 201, 400      |
+| PUT    | `/api/task/{id}`      | Update existing task       | UpdateTaskDTO | -                                   | 200, 400, 404 |
+| DELETE | `/api/task/{id}`      | Delete task                | -             | -                                   | 204, 404      |
+
+### Pagination Parameters
+
+| Parameter  | Type       | Default | Description                      | Required |
+| ---------- | ---------- | ------- | -------------------------------- | -------- |
+| PageNumber | int        | 1       | Page number (starts at 1)        | No       |
+| PageSize   | int        | 20      | Items per page (max 100)         | No       |
+| title      | string     | null    | Filter by title (partial search) | No       |
+| status     | TaskStatus | null    | Filter by status (1, 2, or 3)    | No       |
 
 ### Task Status Enum
 
@@ -209,7 +256,7 @@ Content-Type: application/json
 }
 ```
 
-### List all tasks
+### List all tasks (without pagination)
 
 **Request:**
 
@@ -234,6 +281,43 @@ GET /api/task
     "status": 2
   }
 ]
+```
+
+### List tasks with pagination and filters
+
+**Request:**
+
+```http
+GET /api/task/paginated?PageNumber=1&PageSize=10&title=auth&status=1
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Implement JWT authentication",
+      "description": "Add authentication system with JWT tokens",
+      "status": 1
+    }
+  ],
+  "currentPage": 1,
+  "totalPages": 1,
+  "pageSize": 10,
+  "totalCount": 1,
+  "hasPrevious": false,
+  "hasNext": false
+}
+```
+
+**Response (400 Bad Request) - PageSize too large:**
+
+```json
+{
+  "error": "PageSize cannot be greater than 100."
+}
 ```
 
 ### Update a task
@@ -322,7 +406,8 @@ The API returns standardized error responses:
 - [x] Migration to PostgreSQL
 - [x] Pagination in listings
 - [x] Filtering and sorting
-- [ ] Unit tests (xUnit)
+- [x] Unit tests (xUnit)
+- [x] Clean Architecture with Class Libraries
 - [ ] Docker and Docker Compose
 - [x] CI/CD with GitHub Actions
 - [ ] Rate limiting
