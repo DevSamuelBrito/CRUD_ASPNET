@@ -1,6 +1,7 @@
 using CRUD_ASPNET.Application.DTO;
 using CRUD_ASPNET.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace CRUD_ASPNET.API.Controller
 {
@@ -45,6 +46,7 @@ namespace CRUD_ASPNET.API.Controller
             return Ok(task);
         }
 
+        [EnableRateLimiting("strict")]
         [HttpPost]
         public async Task<IActionResult> AddTask([FromBody] CreateTaskDTO createTaskDTO)
         {

@@ -5,7 +5,9 @@ using CRUD_ASPNET.Infra.Repositories.Interfaces;
 using CRUD_ASPNET.Repositories;
 using CRUD_ASPNET.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,26 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
         return new BadRequestObjectResult(result);
     };
+});
+
+//Rate limiting
+builder.Services.AddRateLimiter(options =>
+{
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context => RateLimitPartition.GetFixedWindowLimiter(
+         context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+         _ => new FixedWindowRateLimiterOptions
+         {
+             PermitLimit = 100,
+             Window = TimeSpan.FromMinutes(1)
+         }
+         ));
+
+    options.AddFixedWindowLimiter("strict", opt =>
+    {
+        opt.PermitLimit = 10;
+        opt.Window = TimeSpan.FromMinutes(1);
+    });
+
 });
 
 //swagger
@@ -111,6 +133,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors();
+
+app.UseRateLimiter();
 
 app.MapControllers();
 
