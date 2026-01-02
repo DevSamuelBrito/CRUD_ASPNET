@@ -18,6 +18,7 @@ RESTful API for task management built with ASP.NET Core, following Clean Archite
 - ✅ AutoMapper for object mapping
 - ✅ Automatic documentation with Swagger/OpenAPI
 - ✅ CORS configured for frontend integration
+- ✅ Rate limiting to protect against abuse
 - ✅ Unit tests with xUnit
 
 ## 🚀 Technologies
@@ -29,6 +30,7 @@ RESTful API for task management built with ASP.NET Core, following Clean Archite
 - **Mapping:** AutoMapper
 - **Documentation:** Swagger/OpenAPI
 - **Validation:** Data Annotations
+- **Rate Limiting:** ASP.NET Core Built-in Rate Limiter
 
 ## 🏗️ Architecture
 
@@ -207,7 +209,7 @@ Access the interactive Swagger documentation at `/api/docs` after starting the a
 | GET    | `/api/task`           | List all tasks             | -             | -                                   | 200           |
 | GET    | `/api/task/paginated` | List tasks with pagination | -             | PageNumber, PageSize, title, status | 200, 400      |
 | GET    | `/api/task/{id}`      | Get task by ID             | -             | -                                   | 200, 404      |
-| POST   | `/api/task`           | Create new task            | CreateTaskDTO | -                                   | 201, 400      |
+| POST   | `/api/task`           | Create new task ⚡         | CreateTaskDTO | -                                   | 201, 400, 429 |
 | PUT    | `/api/task/{id}`      | Update existing task       | UpdateTaskDTO | -                                   | 200, 400, 404 |
 | DELETE | `/api/task/{id}`      | Delete task                | -             | -                                   | 204, 404      |
 
@@ -395,6 +397,43 @@ The API returns standardized error responses:
 }
 ```
 
+## 🛡️ Rate Limiting
+
+The API implements rate limiting to protect against abuse and ensure fair usage:
+
+### Global Rate Limit
+
+- **Limit:** 100 requests per minute per IP address
+- **Applies to:** All endpoints
+- **Window:** Fixed window of 1 minute
+
+### Strict Rate Limit ⚡
+
+- **Limit:** 10 requests per minute
+- **Applies to:** POST `/api/task` (Create new task)
+- **Window:** Fixed window of 1 minute
+
+### Rate Limit Response (429 Too Many Requests)
+
+When you exceed the rate limit, the API returns:
+
+```json
+{
+  "statusCode": 429,
+  "message": "Too many requests. Please try again later."
+}
+```
+
+**Response Headers:**
+
+- `Retry-After`: Time in seconds until you can make requests again
+
+**Best Practices:**
+
+- Implement exponential backoff in your client applications
+- Cache responses when possible to reduce API calls
+- Monitor rate limit headers in production
+
 ## 🌱 Branches
 
 - `main` - Stable/production version
@@ -408,9 +447,9 @@ The API returns standardized error responses:
 - [x] Filtering and sorting
 - [x] Unit tests (xUnit)
 - [x] Clean Architecture with Class Libraries
+- [x] Rate limiting (Global + Endpoint-specific)
 - [ ] Docker and Docker Compose
 - [x] CI/CD with GitHub Actions
-- [ ] Rate limiting
 - [x] API versioning
 
 ## 🤝 Contributing
