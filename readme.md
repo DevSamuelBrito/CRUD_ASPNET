@@ -21,7 +21,7 @@ RESTful API for task management built with ASP.NET Core, following Clean Archite
 - ✅ Automatic documentation with Swagger/OpenAPI
 - ✅ CORS configured for frontend integration
 - ✅ Rate limiting to protect against abuse
-- ✅ Unit tests with xUnit
+- ✅ Unit tests (xUnit) for Application Services
 - ✅ Docker containerization with Docker Compose
 - ✅ Automatic database migrations on startup
 
