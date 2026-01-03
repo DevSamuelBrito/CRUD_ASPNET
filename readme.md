@@ -2,7 +2,9 @@
 
 ![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=flat&logo=dotnet)
 ![C#](https://img.shields.io/badge/C%23-12.0-239120?style=flat&logo=csharp)
-![Version](https://img.shields.io/badge/version-2.2.0-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=flat&logo=docker&logoColor=white)
+![Version](https://img.shields.io/badge/version-2.3.0-blue)
 
 RESTful API for task management built with ASP.NET Core, following Clean Architecture principles and development best practices.
 
@@ -12,53 +14,102 @@ RESTful API for task management built with ASP.NET Core, following Clean Archite
 - ✅ Automatic validation with Data Annotations
 - ✅ Global exception handling with standardized responses
 - ✅ Structured logging with ILogger
-- ✅ Layered architecture (Controller → Service → Repository)
+- ✅ Clean Architecture with separated layers (API, Application, Domain, Infrastructure)
 - ✅ DTOs for separation of concerns
-- ✅ Pagination support for large datasets
+- ✅ Pagination support with filtering (by title and status)
 - ✅ AutoMapper for object mapping
 - ✅ Automatic documentation with Swagger/OpenAPI
 - ✅ CORS configured for frontend integration
+- ✅ Rate limiting to protect against abuse
+- ✅ Unit tests with xUnit
+- ✅ Docker containerization with Docker Compose
+- ✅ Automatic database migrations on startup
 
 ## 🚀 Technologies
 
 - **Framework:** ASP.NET Core 9.0
 - **Language:** C# 12.0
 - **ORM:** Entity Framework Core 9.0
-- **Database:** PostgreSQL
+- **Database:** PostgreSQL 16
+- **Containerization:** Docker & Docker Compose
 - **Mapping:** AutoMapper
 - **Documentation:** Swagger/OpenAPI
 - **Validation:** Data Annotations
+- **Rate Limiting:** ASP.NET Core Built-in Rate Limiter
+- **Testing:** xUnit
 
 ## 🏗️ Architecture
 
+The project follows **Clean Architecture** principles and is organized into separate layers using **Class Libraries**:
+
 ```
 CRUD_ASPNET/
-├── Controller/              # HTTP Endpoints (API)
-├── Services/                # Business logic
-│   ├── ITaskService.cs
-│   └── TaskService.cs
-├── Repositories/            # Data access
-│   ├── ITaskRepository.cs
-│   └── TaskRepository.cs
-├── Models/                  # Database entities
-│   ├── Tasks.cs
-│   └── TaskStatus.cs
-├── Application/
-│   ├── DTO/                # Data Transfer Objects
-│   │   ├── CreateTaskDTO.cs
+├── CRUD_ASPNET.API/                    # 🌐 Presentation Layer
+│   ├── Controller/                      # HTTP Endpoints (API Controllers)
+│   │   └── TaskController.cs
+│   ├── Middleware/                      # Exception handlers & middlewares
+│   │   └── GlobalExceptionHandlerMiddleware.cs
+│   ├── Program.cs                       # Application configuration
+│   ├── dockerfile                       # Docker image configuration
+│   └── Properties/
+│       └── launchSettings.json
+│
+├── CRUD_ASPNET.Application/            # 📋 Application Layer
+│   ├── Services/                        # Business logic
+│   │   ├── Interfaces/
+│   │   │   └── ITaskService.cs
+│   │   └── TaskService.cs
+│   ├── DTO/                            # Data Transfer Objects
+│   │   ├── CreateTaskDto.cs
 │   │   ├── ReadTaskDto.cs
-│   │   └── UpdateTaskDTO.cs
-│   └── Mappings/           # AutoMapper profiles
+│   │   ├── UpdateTaskDto.cs
+│   │   └── GetParametersDTO.cs         # DTO for pagination
+│   └── Mappings/                       # AutoMapper profiles
 │       └── TaskProfile.cs
-├── Configuration/
-│   └── Context/            # DbContext
-│       └── AppDbContext.cs
-├── Middleware/             # Exception handlers
-│   └── GlobalExceptionHandlerMiddleware.cs
-└── Migrations/             # EF Core Migrations
+│
+├── CRUD_ASPNET.Domain/                 # 🎯 Domain Layer
+│   └── Entities/                        # Domain entities
+│       ├── Tasks.cs
+│       └── TaskStatus.cs
+│
+├── CRUD_ASPNET.Infra/                  # 🗄️ Infrastructure Layer
+│   └── Infra/
+│       ├── Configuration/
+│       │   └── Context/
+│       │       └── AppDbContext.cs     # EF Core DbContext
+│       ├── Repositories/               # Data access
+│       │   ├── Interfaces/
+│       │   │   └── ITaskRepository.cs
+│       │   └── TaskRepository.cs
+│       ├── Pagination/                 # Pagination utilities
+│       │   └── PagedList.cs
+│       └── Migrations/                 # EF Core migrations
+│
+├── CRUD_ASPNET.Tests/                  # 🧪 Test Layer
+│   ├── Services/
+│   │   └── TaskServiceTests.cs
+│   └── CRUD_ASPNET.Tests.csproj
+│
+└── docker-compose.yml                  # 🐳 Docker orchestration
 ```
 
+### Separation of Concerns
+
+- **API Layer:** Handles HTTP requests and returns responses
+- **Application Layer:** Contains business logic and orchestration
+- **Domain Layer:** Defines entities and domain business rules
+- **Infrastructure Layer:** Implements persistence, data access, and external features
+- **Test Layer:** Unit and integration tests
+
 ## 📋 Prerequisites
+
+### Option 1: Running with Docker (Recommended)
+
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- Git
+
+### Option 2: Running Locally
 
 - [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
 - [PostgreSQL](https://www.postgresql.org/download/) (version 12 or higher)
@@ -66,6 +117,123 @@ CRUD_ASPNET/
 - Recommended IDE: Visual Studio Code or Visual Studio 2022
 
 ## 🔧 Installation and Setup
+
+### 🐳 Option 1: Running with Docker (Recommended)
+
+Docker Compose provides the easiest way to run the application with all dependencies configured automatically.
+
+#### What's included:
+
+- **API Container:** ASP.NET Core 9.0 application
+- **Database Container:** PostgreSQL 16
+- **Automatic migrations:** Database schema is created on startup
+- **Persistent storage:** Database data is preserved between restarts
+- **Network isolation:** Containers communicate on a private network
+
+#### Quick Start:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/DevSamuelBrito/CRUD_ASPNET.git
+cd CRUD_ASPNET
+
+# 2. Start the application
+docker compose up --build
+
+# Or run in detached mode (background)
+docker compose up -d --build
+```
+
+The API will be available at:
+
+- **API:** http://localhost:8080
+- **Swagger Documentation:** http://localhost:8080/api/docs
+- **PostgreSQL:** localhost:5432
+
+#### Docker Commands:
+
+```bash
+# Stop the application
+docker compose down
+
+# Stop and remove all data (including database)
+docker compose down -v
+
+# View logs
+docker compose logs -f
+
+# View logs for a specific service
+docker compose logs -f api
+docker compose logs -f db
+
+# Restart services
+docker compose restart
+
+# Check running containers
+docker compose ps
+```
+
+#### Docker Configuration Files:
+
+**docker-compose.yml:**
+
+- Orchestrates both API and PostgreSQL containers
+- Configures networking, ports, and environment variables
+- Sets up health checks for the database
+- Defines persistent volume for database data
+
+**CRUD_ASPNET.API/dockerfile:**
+
+- Multi-stage build for optimized image size
+- Stage 1: Build the application using .NET SDK 9.0
+- Stage 2: Runtime with ASP.NET Core 9.0 (smaller image)
+- Exposes port 8080
+
+#### Environment Variables (Docker):
+
+The following environment variables are configured in `docker-compose.yml`:
+
+- `ASPNETCORE_ENVIRONMENT=Development` - Enables Swagger and developer features
+- `ConnectionStrings__DefaultConnection` - PostgreSQL connection string (automatically configured)
+
+#### Troubleshooting Docker:
+
+**Port already in use:**
+
+```bash
+# Check what's using port 8080
+lsof -i :8080
+
+# Change the port in docker-compose.yml
+ports:
+  - "9090:8080"  # Use port 9090 instead
+```
+
+**Database connection issues:**
+
+```bash
+# Verify database is healthy
+docker compose ps
+
+# Check database logs
+docker compose logs db
+```
+
+**Clean restart:**
+
+```bash
+# Remove all containers and volumes
+docker compose down -v
+
+# Rebuild and start
+docker compose up --build
+```
+
+---
+
+### 💻 Option 2: Running Locally (Without Docker)
+
+If you prefer to run the application without Docker:
 
 ### 1. Clone the repository
 
@@ -159,19 +327,35 @@ The API will be available at:
 - **HTTPS:** https://localhost:7217
 - **Swagger:** http://localhost:5272/api/docs
 
+### 6. Run the Tests
+
+```bash
+dotnet test
+```
+
 ## 📖 API Documentation
 
 Access the interactive Swagger documentation at `/api/docs` after starting the application.
 
 ### Available Endpoints
 
-| Method | Endpoint         | Description          | Request Body  | Status Code   |
-| ------ | ---------------- | -------------------- | ------------- | ------------- |
-| GET    | `/api/task`      | List all tasks       | -             | 200           |
-| GET    | `/api/task/{id}` | Get task by ID       | -             | 200, 404      |
-| POST   | `/api/task`      | Create new task      | CreateTaskDTO | 201, 400      |
-| PUT    | `/api/task/{id}` | Update existing task | UpdateTaskDTO | 200, 400, 404 |
-| DELETE | `/api/task/{id}` | Delete task          | -             | 204, 404      |
+| Method | Endpoint              | Description                | Request Body  | Query Params                        | Status Code   |
+| ------ | --------------------- | -------------------------- | ------------- | ----------------------------------- | ------------- |
+| GET    | `/api/task`           | List all tasks             | -             | -                                   | 200           |
+| GET    | `/api/task/paginated` | List tasks with pagination | -             | PageNumber, PageSize, title, status | 200, 400      |
+| GET    | `/api/task/{id}`      | Get task by ID             | -             | -                                   | 200, 404      |
+| POST   | `/api/task`           | Create new task ⚡         | CreateTaskDTO | -                                   | 201, 400, 429 |
+| PUT    | `/api/task/{id}`      | Update existing task       | UpdateTaskDTO | -                                   | 200, 400, 404 |
+| DELETE | `/api/task/{id}`      | Delete task                | -             | -                                   | 204, 404      |
+
+### Pagination Parameters
+
+| Parameter  | Type       | Default | Description                      | Required |
+| ---------- | ---------- | ------- | -------------------------------- | -------- |
+| PageNumber | int        | 1       | Page number (starts at 1)        | No       |
+| PageSize   | int        | 20      | Items per page (max 100)         | No       |
+| title      | string     | null    | Filter by title (partial search) | No       |
+| status     | TaskStatus | null    | Filter by status (1, 2, or 3)    | No       |
 
 ### Task Status Enum
 
@@ -209,7 +393,7 @@ Content-Type: application/json
 }
 ```
 
-### List all tasks
+### List all tasks (without pagination)
 
 **Request:**
 
@@ -234,6 +418,43 @@ GET /api/task
     "status": 2
   }
 ]
+```
+
+### List tasks with pagination and filters
+
+**Request:**
+
+```http
+GET /api/task/paginated?PageNumber=1&PageSize=10&title=auth&status=1
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Implement JWT authentication",
+      "description": "Add authentication system with JWT tokens",
+      "status": 1
+    }
+  ],
+  "currentPage": 1,
+  "totalPages": 1,
+  "pageSize": 10,
+  "totalCount": 1,
+  "hasPrevious": false,
+  "hasNext": false
+}
+```
+
+**Response (400 Bad Request) - PageSize too large:**
+
+```json
+{
+  "error": "PageSize cannot be greater than 100."
+}
 ```
 
 ### Update a task
@@ -311,6 +532,43 @@ The API returns standardized error responses:
 }
 ```
 
+## 🛡️ Rate Limiting
+
+The API implements rate limiting to protect against abuse and ensure fair usage:
+
+### Global Rate Limit
+
+- **Limit:** 100 requests per minute per IP address
+- **Applies to:** All endpoints
+- **Window:** Fixed window of 1 minute
+
+### Strict Rate Limit ⚡
+
+- **Limit:** 10 requests per minute
+- **Applies to:** POST `/api/task` (Create new task)
+- **Window:** Fixed window of 1 minute
+
+### Rate Limit Response (429 Too Many Requests)
+
+When you exceed the rate limit, the API returns:
+
+```json
+{
+  "statusCode": 429,
+  "message": "Too many requests. Please try again later."
+}
+```
+
+**Response Headers:**
+
+- `Retry-After`: Time in seconds until you can make requests again
+
+**Best Practices:**
+
+- Implement exponential backoff in your client applications
+- Cache responses when possible to reduce API calls
+- Monitor rate limit headers in production
+
 ## 🌱 Branches
 
 - `main` - Stable/production version
@@ -322,10 +580,11 @@ The API returns standardized error responses:
 - [x] Migration to PostgreSQL
 - [x] Pagination in listings
 - [x] Filtering and sorting
-- [ ] Unit tests (xUnit)
-- [ ] Docker and Docker Compose
+- [x] Unit tests (xUnit)
+- [x] Clean Architecture with Class Libraries
+- [x] Rate limiting (Global + Endpoint-specific)
+- [x] Docker and Docker Compose
 - [x] CI/CD with GitHub Actions
-- [ ] Rate limiting
 - [x] API versioning
 
 ## 🤝 Contributing

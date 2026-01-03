@@ -22,3 +22,29 @@ Entidade (Models.Tasks)
 DTO (ReadTaskDto)
     ↓ retorna para
 Controller → Cliente
+
+├── API
+│   ├── Controllers
+│   ├── Middleware
+│
+├── Application
+│   ├── DTOs
+│   ├── Interfaces
+│   │   ├── Services
+│   │   └── Repositories
+│   ├── UseCases (ou Services)
+│
+├── Domain
+│   ├── Entities
+│   ├── ValueObjects
+│   ├── Exceptions
+│   └── Rules (opcional)
+│
+├── Infrastructure
+│   ├── Persistence
+│   │   ├── Context
+│   │   ├── Repositories
+│   │   └── Mappings
+│   ├── Configurations
+│
+├── Migrations
