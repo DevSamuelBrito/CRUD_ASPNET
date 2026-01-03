@@ -2,6 +2,8 @@
 
 ![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=flat&logo=dotnet)
 ![C#](https://img.shields.io/badge/C%23-12.0-239120?style=flat&logo=csharp)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=flat&logo=docker&logoColor=white)
 ![Version](https://img.shields.io/badge/version-2.3.0-blue)
 
 RESTful API for task management built with ASP.NET Core, following Clean Architecture principles and development best practices.
@@ -20,17 +22,21 @@ RESTful API for task management built with ASP.NET Core, following Clean Archite
 - ✅ CORS configured for frontend integration
 - ✅ Rate limiting to protect against abuse
 - ✅ Unit tests with xUnit
+- ✅ Docker containerization with Docker Compose
+- ✅ Automatic database migrations on startup
 
 ## 🚀 Technologies
 
 - **Framework:** ASP.NET Core 9.0
 - **Language:** C# 12.0
 - **ORM:** Entity Framework Core 9.0
-- **Database:** PostgreSQL
+- **Database:** PostgreSQL 16
+- **Containerization:** Docker & Docker Compose
 - **Mapping:** AutoMapper
 - **Documentation:** Swagger/OpenAPI
 - **Validation:** Data Annotations
 - **Rate Limiting:** ASP.NET Core Built-in Rate Limiter
+- **Testing:** xUnit
 
 ## 🏗️ Architecture
 
@@ -44,6 +50,7 @@ CRUD_ASPNET/
 │   ├── Middleware/                      # Exception handlers & middlewares
 │   │   └── GlobalExceptionHandlerMiddleware.cs
 │   ├── Program.cs                       # Application configuration
+│   ├── dockerfile                       # Docker image configuration
 │   └── Properties/
 │       └── launchSettings.json
 │
@@ -74,13 +81,16 @@ CRUD_ASPNET/
 │       │   ├── Interfaces/
 │       │   │   └── ITaskRepository.cs
 │       │   └── TaskRepository.cs
-│       └── Pagination/                 # Pagination utilities
-│           └── PagedList.cs
+│       ├── Pagination/                 # Pagination utilities
+│       │   └── PagedList.cs
+│       └── Migrations/                 # EF Core migrations
 │
-└── CRUD_ASPNET.Tests/                  # 🧪 Test Layer
-    ├── Services/
-    │   └── TaskServiceTests.cs
-    └── CRUD_ASPNET.Tests.csproj
+├── CRUD_ASPNET.Tests/                  # 🧪 Test Layer
+│   ├── Services/
+│   │   └── TaskServiceTests.cs
+│   └── CRUD_ASPNET.Tests.csproj
+│
+└── docker-compose.yml                  # 🐳 Docker orchestration
 ```
 
 ### Separation of Concerns
@@ -93,12 +103,137 @@ CRUD_ASPNET/
 
 ## 📋 Prerequisites
 
+### Option 1: Running with Docker (Recommended)
+
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- Git
+
+### Option 2: Running Locally
+
 - [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
 - [PostgreSQL](https://www.postgresql.org/download/) (version 12 or higher)
 - Git
 - Recommended IDE: Visual Studio Code or Visual Studio 2022
 
 ## 🔧 Installation and Setup
+
+### 🐳 Option 1: Running with Docker (Recommended)
+
+Docker Compose provides the easiest way to run the application with all dependencies configured automatically.
+
+#### What's included:
+
+- **API Container:** ASP.NET Core 9.0 application
+- **Database Container:** PostgreSQL 16
+- **Automatic migrations:** Database schema is created on startup
+- **Persistent storage:** Database data is preserved between restarts
+- **Network isolation:** Containers communicate on a private network
+
+#### Quick Start:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/DevSamuelBrito/CRUD_ASPNET.git
+cd CRUD_ASPNET
+
+# 2. Start the application
+docker compose up --build
+
+# Or run in detached mode (background)
+docker compose up -d --build
+```
+
+The API will be available at:
+
+- **API:** http://localhost:8080
+- **Swagger Documentation:** http://localhost:8080/api/docs
+- **PostgreSQL:** localhost:5432
+
+#### Docker Commands:
+
+```bash
+# Stop the application
+docker compose down
+
+# Stop and remove all data (including database)
+docker compose down -v
+
+# View logs
+docker compose logs -f
+
+# View logs for a specific service
+docker compose logs -f api
+docker compose logs -f db
+
+# Restart services
+docker compose restart
+
+# Check running containers
+docker compose ps
+```
+
+#### Docker Configuration Files:
+
+**docker-compose.yml:**
+
+- Orchestrates both API and PostgreSQL containers
+- Configures networking, ports, and environment variables
+- Sets up health checks for the database
+- Defines persistent volume for database data
+
+**CRUD_ASPNET.API/dockerfile:**
+
+- Multi-stage build for optimized image size
+- Stage 1: Build the application using .NET SDK 9.0
+- Stage 2: Runtime with ASP.NET Core 9.0 (smaller image)
+- Exposes port 8080
+
+#### Environment Variables (Docker):
+
+The following environment variables are configured in `docker-compose.yml`:
+
+- `ASPNETCORE_ENVIRONMENT=Development` - Enables Swagger and developer features
+- `ConnectionStrings__DefaultConnection` - PostgreSQL connection string (automatically configured)
+
+#### Troubleshooting Docker:
+
+**Port already in use:**
+
+```bash
+# Check what's using port 8080
+lsof -i :8080
+
+# Change the port in docker-compose.yml
+ports:
+  - "9090:8080"  # Use port 9090 instead
+```
+
+**Database connection issues:**
+
+```bash
+# Verify database is healthy
+docker compose ps
+
+# Check database logs
+docker compose logs db
+```
+
+**Clean restart:**
+
+```bash
+# Remove all containers and volumes
+docker compose down -v
+
+# Rebuild and start
+docker compose up --build
+```
+
+---
+
+### 💻 Option 2: Running Locally (Without Docker)
+
+If you prefer to run the application without Docker:
 
 ### 1. Clone the repository
 
@@ -448,7 +583,7 @@ When you exceed the rate limit, the API returns:
 - [x] Unit tests (xUnit)
 - [x] Clean Architecture with Class Libraries
 - [x] Rate limiting (Global + Endpoint-specific)
-- [ ] Docker and Docker Compose
+- [x] Docker and Docker Compose
 - [x] CI/CD with GitHub Actions
 - [x] API versioning
 
