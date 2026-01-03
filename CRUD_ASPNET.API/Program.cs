@@ -92,6 +92,13 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Aplica migrations automaticamente
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
+}
+
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 var swaggerSettings = builder.Configuration.GetSection("Swagger");
