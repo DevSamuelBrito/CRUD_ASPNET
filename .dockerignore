@@ -1,0 +1,22 @@
+# Documentação
+readme.md
+Structure.txt
+*.md
+
+# Binários e build
+**/bin/
+**/obj/
+**/out/
+
+# Arquivos de desenvolvimento
+.git/
+.gitignore
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Docker
+dockerfile
+.dockerignore
+docker-compose*.yml
