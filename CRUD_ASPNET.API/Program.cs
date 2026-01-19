@@ -1,3 +1,4 @@
+using CRUD_ASPNET.API.Extensions;
 using CRUD_ASPNET.API.Middleware;
 using CRUD_ASPNET.Application.Services.Interfaces;
 using CRUD_ASPNET.Configuration.Context;
@@ -67,12 +68,8 @@ builder.Services.AddSwaggerGen();
 //auto mapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-//db context
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))); sqlite
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))); // postgresql
-
+//db
+builder.Services.AddDatabaseService(builder.Configuration);
 
 //Injection of dependencies
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();

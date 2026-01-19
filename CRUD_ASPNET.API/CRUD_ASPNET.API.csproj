@@ -39,4 +39,8 @@
 		<ProjectReference Include="..\CRUD_ASPNET.Infra\CRUD_ASPNET.Infra.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Extensions/" />
+	</ItemGroup>
+
 </Project>
