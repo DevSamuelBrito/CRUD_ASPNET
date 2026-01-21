@@ -1,10 +1,6 @@
 using CRUD_ASPNET.API.Extensions;
 using CRUD_ASPNET.API.Middleware;
-using CRUD_ASPNET.Application.Services.Interfaces;
 using CRUD_ASPNET.Configuration.Context;
-using CRUD_ASPNET.Infra.Repositories.Interfaces;
-using CRUD_ASPNET.Repositories;
-using CRUD_ASPNET.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
@@ -75,16 +71,7 @@ builder.Services.AddDatabaseService(builder.Configuration);
 builder.Services.AddScopedServices();
 
 //CORS
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(
-        policy =>
-        {
-            policy.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-        });
-});
+builder.Services.AddCorsPolicy();
 
 var app = builder.Build();
 
