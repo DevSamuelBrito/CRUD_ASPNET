@@ -72,8 +72,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDatabaseService(builder.Configuration);
 
 //Injection of dependencies
-builder.Services.AddScoped<ITaskRepository, TaskRepository>();
-builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScopedServices();
 
 //CORS
 builder.Services.AddCors(options =>

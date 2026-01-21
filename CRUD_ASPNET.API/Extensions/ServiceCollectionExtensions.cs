@@ -1,4 +1,8 @@
+using CRUD_ASPNET.Application.Services.Interfaces;
 using CRUD_ASPNET.Configuration.Context;
+using CRUD_ASPNET.Infra.Repositories.Interfaces;
+using CRUD_ASPNET.Repositories;
+using CRUD_ASPNET.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace CRUD_ASPNET.API.Extensions;
@@ -22,6 +26,17 @@ public static class ServiceCollectionExtensions
         //    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))); sqlite
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))); // postgresql
+
+        return services;
+    }
+
+    public static IServiceCollection AddScopedServices(this IServiceCollection services)
+    {
+        //repositories
+        services.AddScoped<ITaskRepository, TaskRepository>();
+
+        //services
+        services.AddScoped<ITaskService, TaskService>();
 
         return services;
     }
