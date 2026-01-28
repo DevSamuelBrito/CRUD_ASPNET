@@ -70,4 +70,16 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
+
+    public static IServiceCollection AddConfigureLogging(this IServiceCollection services)
+    {
+        services.AddLogging(loggingBuilder =>
+        {
+            loggingBuilder.AddConsole();
+            loggingBuilder.AddDebug();
+        });
+
+        return services;
+
+    }
 }

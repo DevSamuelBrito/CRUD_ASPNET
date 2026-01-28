@@ -8,9 +8,7 @@ using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configura logging para formato simples (evita duplicação visual)
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
+builder.Services.AddConfigureLogging();
 
 builder.Services.AddControllers();
 
