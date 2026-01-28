@@ -30,6 +30,13 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+
+    /// <summary>
+    /// Adiciona serviços com escopo à coleção de serviços, registrando
+    /// repositórios e serviços da camada de aplicação.
+    /// </summary>
+    /// <param name="services">A coleção de serviços.</param>
+    /// <returns>A coleção de serviços atualizada com os serviços registrados.</returns>
     public static IServiceCollection AddScopedServices(this IServiceCollection services)
     {
         //repositories
@@ -41,6 +48,13 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Configura e adiciona uma política CORS padrão à coleção de serviços.
+    /// Esta política permite requisições de qualquer origem, qualquer método
+    /// e qualquer cabeçalho — adequada para APIs públicas durante desenvolvimento.
+    /// </summary>
+    /// <param name="services">A coleção de serviços.</param>
+    /// <returns>A coleção de serviços atualizada com a política CORS registrada.</returns>
     public static IServiceCollection AddCorsPolicy(this IServiceCollection services)
     {
         services.AddCors(options =>
@@ -53,7 +67,7 @@ public static class ServiceCollectionExtensions
                 .AllowAnyHeader();
             });
         });
-        
+
         return services;
     }
 }
