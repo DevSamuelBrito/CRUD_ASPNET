@@ -71,6 +71,12 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Configura e adiciona provedores de logging à coleção de serviços,
+    /// permitindo o registro de logs no console e no debug durante a execução da aplicação.
+    /// </summary>
+    /// <param name="services">A coleção de serviços.</param>
+    /// <
     public static IServiceCollection AddConfigureLogging(this IServiceCollection services)
     {
         services.AddLogging(loggingBuilder =>
