@@ -3,6 +3,7 @@ using CRUD_ASPNET.Configuration.Context;
 using CRUD_ASPNET.Infra.Repositories.Interfaces;
 using CRUD_ASPNET.Repositories;
 using CRUD_ASPNET.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CRUD_ASPNET.API.Extensions;
@@ -76,7 +77,7 @@ public static class ServiceCollectionExtensions
     /// permitindo o registro de logs no console e no debug durante a execução da aplicação.
     /// </summary>
     /// <param name="services">A coleção de serviços.</param>
-    /// <
+    /// <returns>A coleção de serviços atualizada com o logging configurado.</returns>
     public static IServiceCollection AddConfigureLogging(this IServiceCollection services)
     {
         services.AddLogging(loggingBuilder =>
@@ -87,5 +88,39 @@ public static class ServiceCollectionExtensions
 
         return services;
 
+    }
+
+    /// <summary>
+    /// Configura respostas de validação customizadas para requisições com modelo inválido.
+    /// Constrói e registra uma fábrica de respostas que retorna um `BadRequestObjectResult`
+    /// contendo o status, título e um dicionário com as mensagens de erro por campo.
+    /// </summary>
+    /// <param name="services">A coleção de serviços.</param>
+    /// <returns>A coleção de serviços atualizada com a configuração de respostas de validação.</returns>
+    public static IServiceCollection CustomValidationResponses(this IServiceCollection services)
+    {
+        services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.InvalidModelStateResponseFactory = context =>
+            {
+                var errors = context.ModelState
+                    .Where(e => e.Value?.Errors.Count > 0)
+                    .ToDictionary(
+                        e => e.Key,
+                        e => e.Value?.Errors.Select(x => x.ErrorMessage ?? string.Empty).ToArray() ?? Array.Empty<string>()
+                    );
+
+                var result = new
+                {
+                    Status = 400,
+                    Title = "One or more validation errors occurred.",
+                    Errors = errors
+                };
+
+                return new BadRequestObjectResult(result);
+            };
+        });
+
+        return services;
     }
 }

@@ -1,7 +1,6 @@
 using CRUD_ASPNET.API.Extensions;
 using CRUD_ASPNET.API.Middleware;
 using CRUD_ASPNET.Configuration.Context;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.RateLimiting;
@@ -13,27 +12,7 @@ builder.Services.AddConfigureLogging();
 builder.Services.AddControllers();
 
 // Customiza respostas de validação
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-    options.InvalidModelStateResponseFactory = context =>
-    {
-        var errors = context.ModelState
-            .Where(e => e.Value?.Errors.Count > 0)
-            .ToDictionary(
-                e => e.Key,
-                e => e.Value?.Errors.Select(x => x.ErrorMessage ?? string.Empty).ToArray() ?? Array.Empty<string>()
-            );
-
-        var result = new
-        {
-            Status = 400,
-            Title = "One or more validation errors occurred.",
-            Errors = errors
-        };
-
-        return new BadRequestObjectResult(result);
-    };
-});
+builder.Services.CustomValidationResponses();
 
 //Rate limiting
 builder.Services.AddRateLimiter(options =>
