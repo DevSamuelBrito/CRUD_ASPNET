@@ -16,8 +16,7 @@ builder.Services.CustomValidationResponses();
 builder.Services.AddRateLimiter();
 
 //swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwagger();
 
 //auto mapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

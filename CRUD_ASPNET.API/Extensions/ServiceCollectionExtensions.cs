@@ -157,4 +157,19 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
+
+    /// <summary>
+    /// Configura e registra o Swagger/OpenAPI para documentação da API.
+    /// Adiciona o explorador de endpoints e o gerador de documentação, permitindo
+    /// visualizar e testar os endpoints durante o desenvolvimento.
+    /// </summary>
+    /// <param name="services">A coleção de serviços.</param>
+    /// <returns>A coleção de serviços atualizada com o Swagger configurado.</returns>
+    public static IServiceCollection AddSwagger(this IServiceCollection services)
+    {
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
+        return services;
+    }
+
 }
