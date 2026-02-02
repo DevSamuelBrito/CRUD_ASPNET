@@ -1,9 +1,7 @@
 using CRUD_ASPNET.API.Extensions;
 using CRUD_ASPNET.API.Middleware;
 using CRUD_ASPNET.Configuration.Context;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,24 +13,7 @@ builder.Services.AddControllers();
 builder.Services.CustomValidationResponses();
 
 //Rate limiting
-builder.Services.AddRateLimiter(options =>
-{
-    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context => RateLimitPartition.GetFixedWindowLimiter(
-         context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
-         _ => new FixedWindowRateLimiterOptions
-         {
-             PermitLimit = 100,
-             Window = TimeSpan.FromMinutes(1)
-         }
-         ));
-
-    options.AddFixedWindowLimiter("strict", opt =>
-    {
-        opt.PermitLimit = 10;
-        opt.Window = TimeSpan.FromMinutes(1);
-    });
-
-});
+builder.Services.AddRateLimiter();
 
 //swagger
 builder.Services.AddEndpointsApiExplorer();

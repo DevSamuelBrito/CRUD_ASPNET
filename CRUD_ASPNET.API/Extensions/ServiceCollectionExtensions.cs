@@ -4,7 +4,9 @@ using CRUD_ASPNET.Infra.Repositories.Interfaces;
 using CRUD_ASPNET.Repositories;
 using CRUD_ASPNET.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.RateLimiting;
 
 namespace CRUD_ASPNET.API.Extensions;
 
@@ -119,6 +121,38 @@ public static class ServiceCollectionExtensions
 
                 return new BadRequestObjectResult(result);
             };
+        });
+
+        return services;
+    }
+
+    /// <summary>
+    /// Configura e adiciona um limitador de taxa (rate limiter) à coleção de serviços.
+    /// Define um limitador global por endereço IP utilizando janela fixa e registra um
+    /// limitador nomeado "strict" mais restritivo. Útil para prevenir abuso e reduzir
+    /// picos de requisições.
+    /// </summary>
+    /// <param name="services">A coleção de serviços.</param>
+    /// <returns>A coleção de serviços atualizada com o rate limiter configurado.</returns>
+    public static IServiceCollection AddLimiterRate(this IServiceCollection services)
+    {
+
+        services.AddRateLimiter(options =>
+        {
+            options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context => RateLimitPartition.GetFixedWindowLimiter(
+            context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 100,
+                Window = TimeSpan.FromMinutes(1)
+            }
+            ));
+
+            options.AddFixedWindowLimiter("strict", opt =>
+            {
+                opt.PermitLimit = 10;
+                opt.Window = TimeSpan.FromMinutes(1);
+            });
         });
 
         return services;
