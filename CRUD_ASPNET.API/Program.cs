@@ -33,11 +33,7 @@ builder.Services.AddCorsPolicy();
 var app = builder.Build();
 
 // Aplica migrations automaticamente
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    dbContext.Database.Migrate();
-}
+app.ApplyMigrations();
 
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
