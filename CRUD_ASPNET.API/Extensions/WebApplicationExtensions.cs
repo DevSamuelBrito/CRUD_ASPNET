@@ -9,15 +9,58 @@ namespace CRUD_ASPNET.API.Extensions
         /// Aplica as migrações pendentes do EF Core no banco de dados usando um DbContext em escopo.
         /// Deve ser chamado após a construção do `WebApplication` (por exemplo, logo após `builder.Build()`).
         /// </summary>
-        /// <param name="app">A instância de `WebApplication` usada para criar o escopo de serviços.</param>
+        /// <param name="builder">A instância de `WebApplication` usada para criar o escopo de serviços.</param>
         /// <returns>Retorna a mesma instância de `WebApplication` para permitir encadeamento.</returns>
-        public static WebApplication ApplyMigrations(this WebApplication app)
+        public static WebApplication ApplyMigrations(this WebApplication builder)
         {
-            using var scope = app.Services.CreateScope();
+            using var scope = builder.Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             dbContext.Database.Migrate();
 
-            return app;
+            return builder;
+        }
+        /// <summary>
+        /// Configura e habilita o Swagger/OpenAPI com base na seção de configuração "Swagger".
+        /// Lê os valores `RoutePrefix` e `JsonRouteTemplate` e registra o middleware do
+        /// Swagger apenas quando a aplicação estiver em ambiente de desenvolvimento.
+        /// </summary>
+        /// <param name="builder">A instância de `WebApplication` usada para configurar o middleware.</param>
+        /// <returns>Retorna a mesma instância de `WebApplication` para permitir encadeamento.</returns>
+        public static WebApplication UseSwaggerFromConfiguration(this WebApplication builder)
+        {
+            var swaggerSettings = builder.Configuration.GetSection("Swagger");
+            var routePrefix = swaggerSettings.GetValue<string>("RoutePrefix") ?? "api/docs";
+            var jsonRouteTemplate = swaggerSettings.GetValue<string>("JsonRouteTemplate");
+
+
+            if (builder.Environment.IsDevelopment())
+            {
+
+                if (!string.IsNullOrEmpty(jsonRouteTemplate))
+                {
+                    builder.UseSwagger(c => c.RouteTemplate = jsonRouteTemplate);
+
+                    var jsonEndpoint = "/" + jsonRouteTemplate.Replace("{documentName}", "v1");
+                    builder.UseSwaggerUI(options =>
+                    {
+                        options.RoutePrefix = routePrefix;
+                        options.SwaggerEndpoint(jsonEndpoint, "CRUD_ASPNET v1");
+                    });
+                }
+                else
+                {
+                    builder.UseSwagger();
+                    builder.UseSwaggerUI(options =>
+                    {
+                        options.RoutePrefix = routePrefix;
+                        options.SwaggerEndpoint("/swagger/v1/swagger.json", "CRUD_ASPNET v1");
+                    });
+                }
+
+            }
+
+            return builder;
         }
     }
+
 }
