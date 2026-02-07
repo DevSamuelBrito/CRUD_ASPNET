@@ -1,4 +1,5 @@
-﻿using CRUD_ASPNET.Configuration.Context;
+﻿using CRUD_ASPNET.API.Middleware;
+using CRUD_ASPNET.Configuration.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace CRUD_ASPNET.API.Extensions
@@ -61,6 +62,33 @@ namespace CRUD_ASPNET.API.Extensions
 
             return builder;
         }
-    }
 
+
+        /// <summary>
+        /// Configura o pipeline de middlewares da aplicação em uma única chamada.
+        /// Executa etapas de inicialização como aplicação de migrações, registro do
+        /// middleware global de exceções, configuração do Swagger, redirecionamento HTTPS,
+        /// CORS, rate limiting e mapeamento dos controllers.
+        /// </summary>
+        /// <param name="app">A instância de `WebApplication` que terá o pipeline configurado.</param>
+        /// <returns>Retorna a mesma instância de `WebApplication` para permitir encadeamento.</returns>
+        public static WebApplication ConfigurePipeline(this WebApplication app)
+        {
+            app.ApplyMigrations();
+
+            app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+
+            app.UseSwaggerFromConfiguration();
+
+            app.UseHttpsRedirection();
+
+            app.UseCors();
+
+            app.UseRateLimiter();
+
+            app.MapControllers();
+
+            return app;
+        }
+    }
 }

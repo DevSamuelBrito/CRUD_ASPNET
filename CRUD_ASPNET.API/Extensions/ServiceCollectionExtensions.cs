@@ -172,4 +172,29 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Agrupa e registra todos os serviços e configurações necessários pela aplicação.
+    /// Encapsula chamadas para configurar logging, controllers, validações customizadas,
+    /// rate limiting, Swagger, AutoMapper, banco de dados, injeção de dependências e CORS.
+    /// </summary>
+    /// <param name="services">A coleção de serviços onde as dependências serão registradas.</param>
+    /// <param name="config">A configuração da aplicação usada para registrar serviços dependentes de configuração (ex.: banco).</param>
+    /// <returns>A coleção de serviços atualizada contendo os registros realizados.</returns>
+    public static IServiceCollection AddApplicationServices(
+      this IServiceCollection services,
+      IConfiguration config)
+    {
+        services.AddConfigureLogging();
+        services.AddControllers();
+        services.CustomValidationResponses();
+        services.AddRateLimiter();
+        services.AddSwagger();
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        services.AddDatabaseService(config);
+        services.AddScopedServices();
+        services.AddCorsPolicy();
+
+        return services;
+    }
+
 }
