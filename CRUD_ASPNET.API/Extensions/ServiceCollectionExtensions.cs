@@ -1,3 +1,4 @@
+using CRUD_ASPNET.Application.Mappings;
 using CRUD_ASPNET.Application.Services.Interfaces;
 using CRUD_ASPNET.Configuration.Context;
 using CRUD_ASPNET.Infra.Repositories.Interfaces;
@@ -189,7 +190,7 @@ public static class ServiceCollectionExtensions
         services.CustomValidationResponses();
         services.AddRateLimiter();
         services.AddSwagger();
-        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        services.AddAutoMapper(typeof(TaskProfile).Assembly);
         services.AddDatabaseService(config);
         services.AddScopedServices();
         services.AddCorsPolicy();
