@@ -4,7 +4,7 @@
 ![C#](https://img.shields.io/badge/C%23-12.0-239120?style=flat&logo=csharp)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=flat&logo=docker&logoColor=white)
-![Version](https://img.shields.io/badge/version-2.3.0-blue)
+![Version](https://img.shields.io/badge/version-2.4.0-blue)
 
 RESTful API for task management built with ASP.NET Core, following Clean Architecture principles and development best practices.
 
