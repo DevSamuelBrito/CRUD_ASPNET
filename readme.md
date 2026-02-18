@@ -47,50 +47,64 @@ CRUD_ASPNET/
 ├── CRUD_ASPNET.API/                    # 🌐 Presentation Layer
 │   ├── Controller/                      # HTTP Endpoints (API Controllers)
 │   │   └── TaskController.cs
+│   ├── Extensions/                      # Extension methods
+│   │   ├── ServiceCollectionExtensions.cs
+│   │   └── WebApplicationExtensions.cs
 │   ├── Middleware/                      # Exception handlers & middlewares
 │   │   └── GlobalExceptionHandlerMiddleware.cs
-│   ├── Program.cs                       # Application configuration
-│   ├── dockerfile                       # Docker image configuration
-│   └── Properties/
-│       └── launchSettings.json
+│   ├── Properties/                      # Project properties
+│   │   └── launchSettings.json
+│   ├── appsettings.json                # App configuration
+│   ├── appsettings.Development.json    # Development configuration
+│   ├── CRUD_ASPNET.API.csproj          # Project file
+│   ├── Dockerfile                      # Docker image configuration
+│   └── Program.cs                       # Application configuration
 │
 ├── CRUD_ASPNET.Application/            # 📋 Application Layer
-│   ├── Services/                        # Business logic
-│   │   ├── Interfaces/
-│   │   │   └── ITaskService.cs
-│   │   └── TaskService.cs
 │   ├── DTO/                            # Data Transfer Objects
 │   │   ├── CreateTaskDto.cs
 │   │   ├── ReadTaskDto.cs
 │   │   ├── UpdateTaskDto.cs
 │   │   └── GetParametersDTO.cs         # DTO for pagination
-│   └── Mappings/                       # AutoMapper profiles
-│       └── TaskProfile.cs
+│   ├── Services/                        # Business logic
+│   │   ├── Interfaces/
+│   │   │   └── ITaskService.cs
+│   │   └── TaskService.cs
+│   ├── Mappings/                       # AutoMapper profiles
+│   │   └── TaskProfile.cs
+│   └── CRUD_ASPNET.Application.csproj  # Project file
 │
 ├── CRUD_ASPNET.Domain/                 # 🎯 Domain Layer
-│   └── Entities/                        # Domain entities
-│       ├── Tasks.cs
-│       └── TaskStatus.cs
+│   ├── Entities/                        # Domain entities
+│   │   ├── Tasks.cs
+│   │   └── TaskStatus.cs
+│   └── CRUD_ASPNET.Domain.csproj       # Project file
 │
 ├── CRUD_ASPNET.Infra/                  # 🗄️ Infrastructure Layer
-│   └── Infra/
-│       ├── Configuration/
-│       │   └── Context/
-│       │       └── AppDbContext.cs     # EF Core DbContext
-│       ├── Repositories/               # Data access
-│       │   ├── Interfaces/
-│       │   │   └── ITaskRepository.cs
-│       │   └── TaskRepository.cs
-│       ├── Pagination/                 # Pagination utilities
-│       │   └── PagedList.cs
-│       └── Migrations/                 # EF Core migrations
+│   ├── Infra/
+│   │   ├── Configuration/               # Entity configurations
+│   │   │   └── Context/
+│   │   │       └── AppDbContext.cs     # EF Core DbContext
+│   │   ├── Repositories/                # Data access patterns
+│   │   │   ├── Interfaces/
+│   │   │   │   └── ITaskRepository.cs
+│   │   │   └── TaskRepository.cs
+│   │   └── Pagination/                  # Pagination utilities
+│   │       └── PagedList.cs
+│   ├── Migrations/                      # EF Core migrations
+│   │   ├── 20260102232311_InitialCreate.cs
+│   │   ├── 20260102232311_InitialCreate.Designer.cs
+│   │   └── AppDbContextModelSnapshot.cs
+│   └── CRUD_ASPNET.Infra.csproj        # Project file
 │
 ├── CRUD_ASPNET.Tests/                  # 🧪 Test Layer
-│   ├── Services/
+│   ├── Services/                        # Service unit tests
 │   │   └── TaskServiceTests.cs
-│   └── CRUD_ASPNET.Tests.csproj
+│   └── CRUD_ASPNET.Tests.csproj        # Project file
 │
-└── docker-compose.yml                  # 🐳 Docker orchestration
+├── CRUD_ASPNET.sln                     # Solution file
+├── docker-compose.yml                  # 🐳 Docker orchestration
+└── readme.md                            # This file
 ```
 
 ### Separation of Concerns
